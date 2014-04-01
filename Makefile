@@ -1,13 +1,13 @@
+TARGET = shell
+OBJECTS= main.c
+HEADERS= miShell.h pipes.h shell.h
+CC= gcc
+.PHONY= clean
 
-OBJECTS: main.c
-HEADERS: miShell.h pipes.h shell.h
-CC: gcc
-.PHONY: clean
 
-all: shell
 
 shell:  $(OBJECTS) $(HEADERS)
 	$(CC) $(OBJECTS) -o shell
 
 clean:
-	rm -f  $(OBJECTS) *.o *.o~ *.h~ Makefile~
+	rm -f  *.o *.c~ *.o~ *.h~ Makefile~
