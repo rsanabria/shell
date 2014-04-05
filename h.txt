@@ -1,0 +1,10 @@
+Makefile
+a.out
+a.txt
+h.txt
+main.c
+miShell.h
+pipes.h
+prueba.txt
+shell
+shell.h
