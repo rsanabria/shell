@@ -1,8 +1,6 @@
 #include "shell.h"
 #include "miShell.h"
 
-//void separa( char *argumentos_buffer);
-//const char * miPwd();
 char * argumentos[BUFFER_SIZE];
 char * token;
 
@@ -24,10 +22,16 @@ main ( int argc, char *argv[]){
     else if(!strcmp(argumentos[0],"cd")){
       chdir(argumentos[1]);
     }
+
+    else if(strcmp(buffer, "clear\n")==0){
+        system("clear");    
+        continue;   
+    }
     //else if(!strcmp(argumentos[
-    else {
+    else { 
       pid = fork();
       if(pid == 0){
+	redireccion();
 	if(execvp(argumentos[0], argumentos)<0){
 	  printf ("ese comando no existe\n");
 	  exit(0);//matar al hijo

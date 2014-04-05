@@ -10,4 +10,4 @@ shell:  $(OBJECTS) $(HEADERS)
 	$(CC) $(OBJECTS) -o shell
 
 clean:
-	rm -f  *.o *.c~ *.o~ *.h~ Makefile~
+	rm -f  *.o *.c~ *.o~ *.h~ Makefile~ *.txt
