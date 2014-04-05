@@ -24,6 +24,7 @@ main (){
     else if(!strcmp(argumentos[0],"cd")){
       chdir(argumentos[1]);
     }
+
 	else if (!strcmp(argumentos[0], "kill") ){
 		shellPid =(int) getpid();
 		if (!strcmp(argumentos[1],"-30") || !strcmp(argumentos[1],"-31") || !strcmp(argumentos[1],"-32") )
@@ -37,16 +38,19 @@ main (){
 		execvp(argumentos[0], argumentos);
 		
 			}
+    else {
+		
+	  
+      if(fork() == 0){
+		redireccion();
+		if(execvp(argumentos[0], argumentos)<0 ){
+			if (argumentos[0] == "\n"){}
+			else{
+			printf ("ese comando no existe\n");
+			}
+			exit(0);//matar al hijo
+		}
 
-
-    else { 
-      pid = fork();
-      if(pid == 0){
-	redireccion();
-	if(execvp(argumentos[0], argumentos)<0){
-	  printf ("ese comando no existe\n");
-	  exit(0);//matar al hijo
-	}
       }
       /* el padre espera al hijo */
        wait(NULL); 	
