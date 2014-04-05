@@ -1,7 +1,6 @@
 
 extern char prompt[6];
 extern char * argumentos[BUFFER_SIZE];
-extern char historial[100][20];
 
 void separa( char *argumentos_buffer,char  *argumentos[]){
 /* Esta función recibe de argumento el buffer y va separar el buffer 
@@ -126,6 +125,7 @@ int execute(char **argumentos, char *infile, char *outfile)
 
  void mostrarHistorial(void)
     {
+	char historial[100][20];
 	char historialCuenta;   
         int i = 0;
 
@@ -138,6 +138,7 @@ int execute(char **argumentos, char *infile, char *outfile)
 
 void setHistorial(char arg[])
 {
+	char historial[100][20];
 	char historialCuenta;   
 	// Guardar el historial desde linea de comandos
         int i = 0;

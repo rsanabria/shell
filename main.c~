@@ -4,7 +4,6 @@
 char * argumentos[BUFFER_SIZE];
 char * token;
 char  prompt[6];
-char historial[100][20];
 int shellPid;
 main (){
   
