@@ -25,19 +25,6 @@ main (){
       chdir(argumentos[1]);
     }
 
-	else if (!strcmp(argumentos[0], "kill") ){
-		shellPid =(int) getpid();
-		if (!strcmp(argumentos[1],"-30") || !strcmp(argumentos[1],"-31") || !strcmp(argumentos[1],"-32") )
-			{
-				
-				printf("%s", argumentos[1]);
-				//sprintf(argumentos[2], "%d",shellPid);
-				
-				}
-				
-		execvp(argumentos[0], argumentos);
-		
-			}
     else {
 		
 	  
