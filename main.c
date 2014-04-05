@@ -25,6 +25,9 @@ main (){
       chdir(argumentos[1]);
     }
 
+	else if (!strcmp(argumentos[0], "mipid")){
+		printf("Mi id de Proceso es %d\n",(int)getpid()); 
+		}
     else {
 		
 	  
