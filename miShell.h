@@ -2,7 +2,7 @@
 extern char prompt[6];
 extern char * argumentos[BUFFER_SIZE];
 extern char historial[100][20];
-
+extern int fd;
 void separa( char *argumentos_buffer,char  *argumentos[]){
 /* Esta función recibe de argumento el buffer y va separar el buffer 
  * en subcadenas cada vez que encuente un espacio */
@@ -126,7 +126,6 @@ int execute(char **argumentos, char *infile, char *outfile)
 
  void mostrarHistorial(void)
     {
-	char historialCuenta;   
         int i = 0;
 
         while(historial[i][0] != '\0')
@@ -136,7 +135,7 @@ int execute(char **argumentos, char *infile, char *outfile)
         }
 }
 
-void setHistorial(char arg[])
+void setHistorial(char *arg)
 {
 	char historialCuenta;   
 	// Guardar el historial desde linea de comandos
@@ -150,7 +149,29 @@ void setHistorial(char arg[])
         historialCuenta++;
 }
 
+void writer(char *buffer)
+{
+	int fd;
+	char *myfifo="/tmp/myfifo";
+	mkfifo(myfifo, 0666);
+	fd=open(myfifo, O_WRONLY);
+	write(fd, buffer, sizeof(BUFFER_SIZE));
+	close(fd);
+	unlink(myfifo);
+}
 
+void reader(int fd)
+{
+	char *myfifo="/tmp/myfifo";
+	char buf[BUFFER_SIZE];
+	if(fork() == 0){
+	
+	read(fd, buf, BUFFER_SIZE);
+	printf("Recibido: %s\n", buf);
+	unlink(myfifo);
+	}
+	//close(fd);
+}
 
 
 

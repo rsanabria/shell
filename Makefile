@@ -1,4 +1,5 @@
 TARGET = shell
+FLAGS = -lpthread
 OBJECTS= main.c
 HEADERS= miShell.h pipes.h shell.h
 CC= gcc
@@ -7,7 +8,7 @@ CC= gcc
 
 
 shell:  $(OBJECTS) $(HEADERS)
-	$(CC) $(OBJECTS) -o shell
+	$(CC) $(FLAGS) $(OBJECTS) -o shell
 
 clean:
 	rm -f  *.o *.c~ *.o~ *.h~ Makefile~ *.txt

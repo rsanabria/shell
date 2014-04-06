@@ -9,6 +9,8 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <signal.h>
+#include <pthread.h>
+#include <time.h>
 #define BUFFER_SIZE 1024
 #define READ 0
 #define WRITE 1
