@@ -1,8 +1,0 @@
-Makefile
-a.out*
-main.c
-miShell.h
-pipes.h
-prueba.txt
-shell*
-shell.h
