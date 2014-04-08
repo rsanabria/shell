@@ -16,10 +16,8 @@ main (){
   prepararSenales();
   int input = 0;
   int first = 1;
-//fd=open(myfifo, O_RDONLY);
-  
+
   while (1){
-//reader(fd);
 	argumentos[0] = "\n"; //inicializar el arreglo para que no haya errores de punteros
 	argumentos[1] = "\n";
 	printf("[%s-%s] %s ", getlogin(), miPwd(), prompt);
@@ -27,12 +25,10 @@ main (){
 	separa(buffer,argumentos);
 	pthread_create(&history, NULL, (void *)setHistorial, buffer);
 	if (!strcmp(argumentos[0],"salir")){
-		//close(fd);
-		exit(0);
+	exit(0);
     }
      else if (!strcmp(argumentos[0], "historial")){    
                      mostrarHistorial();
-                        continue;
                   }      
     else if(!strcmp(argumentos[0],"cd")){
       chdir(argumentos[1]);
@@ -44,7 +40,6 @@ main (){
     else {
       if(fork() == 0){
 		redireccion();	
-//		pipes();	
 		if(execvp(argumentos[0], argumentos)<0 )
 		{
 			if (argumentos[0] == "\n"){}

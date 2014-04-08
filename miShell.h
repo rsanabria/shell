@@ -195,8 +195,7 @@ int execute(char **argumentos, char *infile, char *outfile, char *outfilea, char
  void mostrarHistorial(void)
     {
         int i = 0;
-
-        while(historial[i][0] != '\0')
+        while(historial[i][0])
         {
                 printf("%d  %s\n", i+1, *(historial + i));
                 i++;
@@ -205,42 +204,15 @@ int execute(char **argumentos, char *infile, char *outfile, char *outfilea, char
 
 void setHistorial(char *arg)
 {
-	char historialCuenta;   
 	// Guardar el historial desde linea de comandos
         int i = 0;
-
-        while(historial[i][0] != '\0')
+	FILE *fp;
+	fp = fopen("/home/edgarmch/tmp/archivo.txt","w");
+        while(historial[i][0])
             {
-             i++;
+		fprintf(fp, "%s\n", *(historial + i) );
+             	i++;
             }
         strcpy(historial[i], arg);
-        historialCuenta++;
+	fclose(fp);
 }
-
-
-void writer(char *buffer)
-{
-	int fd;
-	char *myfifo="/tmp/myfifo";
-	mkfifo(myfifo, 0666);
-	fd=open(myfifo, O_WRONLY);
-	write(fd, buffer, sizeof(BUFFER_SIZE));
-	close(fd);
-	unlink(myfifo);
-}
-
-void reader(int fd)
-{
-	char *myfifo="/tmp/myfifo";
-	char buf[BUFFER_SIZE];
-	if(fork() == 0){
-	
-	read(fd, buf, BUFFER_SIZE);
-	printf("Recibido: %s\n", buf);
-	unlink(myfifo);
-	}
-	//close(fd);
-}
-
-
-
