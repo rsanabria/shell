@@ -3,6 +3,7 @@ extern char prompt[6];
 extern char * argumentos[BUFFER_SIZE];
 extern char historial[100][20];
 extern int fd;
+extern int args;
 void separa( char *argumentos_buffer,char  *argumentos[]){
 /* Esta función recibe de argumento el buffer y va separar el buffer 
  * en subcadenas cada vez que encuente un espacio */
@@ -60,11 +61,12 @@ void prepararSenales(){
 	}
 }
 void redireccion(){
-	char *infile, *outfile;
+	char *infile, *outfile, *outa;
 	char **cp;
 	int status;
 	infile = NULL;
         outfile = NULL;
+	outa = NULL;
 
         for (cp = argumentos; *cp != NULL; cp++){
             if (strcmp(*cp, "<") == 0){
@@ -83,17 +85,26 @@ void redireccion(){
                 *cp++ = NULL;
                 outfile = *cp;
             	}
+	  else if (strcmp(*cp, ">>") == 0){
+                if (*(cp+1) == NULL){
+                    fprintf(stderr, "Debes especificar un archivo de salida\n");
+	            break;
+                }
+                *cp++ = NULL;
+                outa = *cp;
+            	}
         }
-	status = execute(argumentos, infile, outfile);
+	status = execute(argumentos, infile, outfile, outa);
 }
 
 
-int execute(char **argumentos, char *infile, char *outfile)
+int execute(char **argumentos, char *infile, char *outfile, char *outfilea)
 {
     int status;
-    int in, out;
+    int in, out, outa;
     in = -1;
     out = -1;
+    outa = -1;
     //Si un archivo de entrada fue recibido, abrirlo
     if (infile != NULL) {
         if ((in = open(infile, O_RDONLY)) < 0) {
@@ -109,16 +120,28 @@ int execute(char **argumentos, char *infile, char *outfile)
             return(-1);
         }
     }
-   //Hacer el direccionamiento de salida
-        if (in > 0)
+
+    if (outfilea != NULL) {
+        if ((outa = open(outfilea, 0666)) < 0) {
+            close(in);
+            return(-1);
+        }
+    }
+   //Hacer redireccionamientos
+        if (in > 0){
             dup2(in, 0);
+	}
 
         if (out > 0)
             dup2(out, 1);   
 
+	if(outa > 0)
+	      freopen(outfilea, "a+", stdout);  
+
 	// Cerrar los descriptores
     close(out);
     close(in);
+    close(outa);
  
     return(status);
 }
@@ -148,6 +171,7 @@ void setHistorial(char *arg)
         strcpy(historial[i], arg);
         historialCuenta++;
 }
+
 
 void writer(char *buffer)
 {
