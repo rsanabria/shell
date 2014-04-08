@@ -10,12 +10,11 @@ int shellPid, fd;
 
 main (){
   pthread_t history;
-  time_t tiempo;
   char buffer[BUFFER_SIZE];
   strcpy(prompt,"#");
   prepararSenales();
-  int input = 0;
-  int first = 1;
+/*  int input = 0;
+  int first = 1;*/
 
   while (1){
 	argumentos[0] = "\n"; //inicializar el arreglo para que no haya errores de punteros

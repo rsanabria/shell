@@ -1,9 +1,10 @@
-
 extern char prompt[6];
 extern char * argumentos[BUFFER_SIZE];
 extern char historial[100][20];
 extern int fd;
 extern int args;
+
+
 void separa( char *argumentos_buffer,char  *argumentos[]){
 /* Esta función recibe de argumento el buffer y va separar el buffer 
  * en subcadenas cada vez que encuente un espacio */
@@ -19,8 +20,10 @@ void separa( char *argumentos_buffer,char  *argumentos[]){
 		token = strtok(NULL," \n");
 	}
 	argumentos[i] = NULL;
+   }
 }
-}
+
+
 const char * miPwd(){
 /* Funcion que consigue el actual directorio y regresa la ultima carpeta
  * del path */         
@@ -37,8 +40,9 @@ const char * miPwd(){
 		}
 	return dir;
 }
-void cambiarPrompt(int signal){
-	
+
+//Cambia el prompt dependiendo de señal recibida
+void cambiarPrompt(int signal){	
 	switch(signal){
 		case 30:
 			strcpy(prompt,"%");
@@ -52,7 +56,9 @@ void cambiarPrompt(int signal){
 		default:
 			break;
 		}
-	}
+}
+
+//Prepara señales 30 a 32
 void prepararSenales(){
 	int i;
 	for(i=30;i<33;i++){
@@ -191,7 +197,7 @@ int execute(char **argumentos, char *infile, char *outfile, char *outfilea, char
     return(status);
 }
 
-
+//Despliega el historial en pantalla
  void mostrarHistorial(void)
     {
         int i = 0;
@@ -206,11 +212,14 @@ void setHistorial(char *arg)
 {
 	// Guardar el historial desde linea de comandos
         int i = 0;
+	time_t tiempo;
+	time(&tiempo);
 	FILE *fp;
 	fp = fopen("/home/edgarmch/tmp/archivo.txt","w");
+	fprintf(fp, "%s\n", ctime(&tiempo) );//imprime la fecha y hora
         while(historial[i][0])
             {
-		fprintf(fp, "%s\n", *(historial + i) );
+		fprintf(fp, "%s\n", *(historial + i) );//Imprime el historial a archivo oculto
              	i++;
             }
         strcpy(historial[i], arg);

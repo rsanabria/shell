@@ -1,4 +1,5 @@
-#ifndef _SHELL_H_   /* Include guard */
+/*Definición de bibliotecas*/
+#ifndef _SHELL_H_   
 #define _SHELL_H_
 #include <stdio.h>
 #include <unistd.h>
@@ -12,6 +13,4 @@
 #include <pthread.h>
 #include <time.h>
 #define BUFFER_SIZE 1024
-#define READ 0
-#define WRITE 1
 #endif
