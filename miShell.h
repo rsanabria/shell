@@ -61,12 +61,14 @@ void prepararSenales(){
 	}
 }
 void redireccion(){
-	char *infile, *outfile, *outa;
+	char *infile, *outfile, *outa, *outerr, *outamp;
 	char **cp;
 	int status;
 	infile = NULL;
         outfile = NULL;
 	outa = NULL;
+	outerr = NULL;
+	outamp = NULL;
 
         for (cp = argumentos; *cp != NULL; cp++){
             if (strcmp(*cp, "<") == 0){
@@ -92,19 +94,39 @@ void redireccion(){
                 }
                 *cp++ = NULL;
                 outa = *cp;
+        }
+
+	else if (strcmp(*cp, "2>") == 0){
+                if (*(cp+1) == NULL){
+                    fprintf(stderr, "Debes especificar un archivo de salida\n");
+	            break;
+                }
+                *cp++ = NULL;
+                outerr = *cp;
+        }        
+
+	else if (strcmp(*cp, "&>") == 0){
+                if (*(cp+1) == NULL){
+                    fprintf(stderr, "Debes especificar un archivo de salida\n");
+	            break;
+                }
+                *cp++ = NULL;
+                outamp = *cp;
             	}
         }
-	status = execute(argumentos, infile, outfile, outa);
+	status = execute(argumentos, infile, outfile, outa, outerr, outamp);
 }
 
 
-int execute(char **argumentos, char *infile, char *outfile, char *outfilea)
+int execute(char **argumentos, char *infile, char *outfile, char *outfilea, char *outfilerr, char *outfileamp)
 {
     int status;
-    int in, out, outa;
+    int in, out, outa, outerr, outamp;
     in = -1;
     out = -1;
     outa = -1;
+    outerr = -1;
+    outamp = -1;
     //Si un archivo de entrada fue recibido, abrirlo
     if (infile != NULL) {
         if ((in = open(infile, O_RDONLY)) < 0) {
@@ -127,6 +149,20 @@ int execute(char **argumentos, char *infile, char *outfile, char *outfilea)
             return(-1);
         }
     }
+
+    if (outfilerr != NULL) {
+        if ((outerr = creat(outfilerr, 0666)) < 0) {
+            close(in);
+            return(-1);
+        }
+    }
+
+    if (outfileamp != NULL) {
+        if ((outamp = creat(outfileamp, 0666)) < 0) {
+            close(in);
+            return(-1);
+        }
+    }
    //Hacer redireccionamientos
         if (in > 0){
             dup2(in, 0);
@@ -138,10 +174,19 @@ int execute(char **argumentos, char *infile, char *outfile, char *outfilea)
 	if(outa > 0)
 	      freopen(outfilea, "a+", stdout);  
 
+	if(outerr > 0)
+	      freopen(outfilerr, "w+", stderr);  
+
+	if(outamp > 0){
+	      freopen(outfileamp, "w+", stderr);  
+	      freopen(outfileamp, "w+", stdout);  
+ 	}
 	// Cerrar los descriptores
     close(out);
     close(in);
     close(outa);
+    close(outerr);
+    close(outamp);
  
     return(status);
 }
