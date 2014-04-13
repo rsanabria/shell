@@ -1,9 +1,8 @@
 extern char prompt[6];
 extern char * argumentos[BUFFER_SIZE];
-extern char historial[100][20];
+extern char historial[HISTORY][20];
 extern int fd;
 extern int args;
-
 
 void separa( char *argumentos_buffer,char  *argumentos[]){
 /* Esta función recibe de argumento el buffer y va separar el buffer 
@@ -198,13 +197,13 @@ int execute(char **argumentos, char *infile, char *outfile, char *outfilea, char
 //Despliega el historial en pantalla
 void mostrarHistorial(void)
 {
-  int i = 0;
-  while(historial[i][0])
-    {
-      printf("%d  %s\n", i+1, *(historial + i));
-      i++;
-    }
+   int i = 0;
+   while(historial[i][0]){	
+	      printf("%4d  %s\n", i+1, *(historial+i));
+	      i++;
+     }
 }
+  
 
 /*Funcion que almacena el historial*/
 void setHistorial(char *arg)
@@ -218,7 +217,7 @@ void setHistorial(char *arg)
   fprintf(fp, "%s\n", ctime(&tiempo) );//imprime la fecha y hora
   while(historial[i][0])
     {
-      fprintf(fp, "%s\n", *(historial + i) );//Imprime el historial a archivo oculto
+      fprintf(fp, "%d  %s\n", i+1, *(historial+i) );//Imprime el historial a archivo oculto
       i++;
     }
   strcpy(historial[i], arg);

@@ -13,4 +13,5 @@
 #include <pthread.h>
 #include <time.h>
 #define BUFFER_SIZE 1024
+#define HISTORY 80
 #endif
